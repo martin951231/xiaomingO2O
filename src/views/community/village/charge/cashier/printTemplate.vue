@@ -446,7 +446,7 @@
                                 :style="{width: item.title=='换行'?'100%':item.width?item.width:1/col_num*100+'%', margin:item.title=='换行'?'0':'5px 0'}"
                                 class="page_header_item" v-for="(item, index) in printList.filter(v=>v.print_type == 1)" :key="index">
                                     <div :style="font1style" style="margin-left: 10px;" v-if="item.title!='换行'">
-                                        {{item.title}}：{{item.value}}
+                                        {{item.title}}{{ item.title.trim().length === 0 ? '': ':' }}{{item.value}}
                                     </div>
                                 </div>
                             </div>
@@ -459,7 +459,7 @@
                                             {{item.title}}
                                         </span>
                                         <span :style="font1style" v-else>
-                                            {{item.title}}：
+                                            {{item.title}}{{ item.title.trim().length === 0 ? '': ':' }}
                                         </span>
                                     </template>
                                     <span :style="font1style">{{item.value}}</span>
@@ -473,7 +473,7 @@
                                     v-if="templateType == 2|| templateType == 3">
                                     <div class="header_item"
                                         v-for="(item, index) in printList.filter(v=>v.print_type == 4)" :key="index">
-                                        <span :style="font4style">{{item.title}}：</span>
+                                        <span :style="font4style">{{item.title}}{{ item.title.trim().length === 0 ? '': ':' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -520,7 +520,7 @@
                                         <div :style="font5style" class="div51" v-if="templateType==3"><span
                                                 class="span51">{{item.title}}</span><span class="span52"></span></div>
 
-                                        <span v-else>{{item.title}}：</span>
+                                        <span v-else>{{item.title}}{{ item.title.trim().length === 0 ? '': ':' }}</span>
 
                                     </div>
                                 </div>
@@ -543,7 +543,7 @@
                                 :style="{width: item.title=='换行'?'100%':item.width?item.width:1/col_num*100+'%', margin:item.title=='换行'?'0':'5px 0'}"
                                 class="page_header_item" v-for="(item, index) in printList.filter(v=>v.print_type == 3)" :key="index">
                                     <div :style="font1style" style="margin-left: 10px;" v-if="item.title!='换行'">
-                                        {{item.title}}：{{item.value}}
+                                        {{item.title}}{{ item.title.trim().length === 0 ? '': ':' }}{{item.value}}
                                     </div>
                                 </div>
                             </div>
@@ -557,7 +557,7 @@
                                             {{item.title}}
                                         </span>
                                         <span :style="font3style" v-else>
-                                            {{item.title}}：
+                                            {{item.title}}{{ item.title.trim().length === 0 ? '': ':' }}
                                         </span>
                                     </template>
                                     <span :style="font3style">{{item.value}}</span>

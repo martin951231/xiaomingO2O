@@ -7,22 +7,22 @@
                 
             <div v-if="printType!=3" class="header_show" style="width: 100%; display: flex; flex-wrap: wrap;">
                 <div v-if="item.title!='标题'" style="flex-shrink: 0; margin: 5px 0; word-break: break-word;" 
-                :style="{width: item.title=='换行'?'100%':item.width?item.width:1/col_num*100+'%', margin:item.title=='换行'?'0':'5px 0'}"
+                :style="{width: item.title=='换行'?'100%':item.width?item.width: item.title.includes('房号') ? 50+'%' : 1/col_num*100+'%', margin:item.title=='换行'?'0':'2px 0'}"
                 class="page_header_item" v-for="(item, index) in list1" :key="index">
                     <div :style="font1style" style="margin-left: 10px;" v-if="item.title!='换行'">
-                        {{item.title}}：{{item.value}}
+                        {{item.title}}：{{ item.title.includes('房号') ? item.value.replace(/\d+层/, '') : item.value }}
                     </div>
                 </div>
             </div>    
-            <a-descriptions v-else style="padding-top: 10px" :column="col_num" :class="'template'+printType+'type'">
+            <a-descriptions v-else style="padding-top: 10px" :column="col_num" :class="'descriptions-header template'+printType+'type'">
                 <a-descriptions-item v-for="(item,index) in list1" :key="index+30" v-if="item.title !== '换行'"
                     style="white-space: nowrap;">
                     <template v-slot:label>
                         <span :style="font1style">
-                            {{item.title}}：
+                            {{item.title}}{{ item.title.trim().length === 0 ? '': ':' }}
                         </span>
                     </template>
-                    <span :style="font1style">{{item.value}}</span>
+                    <span :style="font1style">{{ item.title.includes('房号') ? item.value.replace(/\d+层/, '') : item.value }}</span>
                 </a-descriptions-item>
             </a-descriptions>
             <!-- <div>
@@ -54,9 +54,12 @@
                     </div>
                 </div>
                 <div class="table_container"
-                    style="display: flex; align-items: center; width: 100%; border-left: 0.5px solid #999999;"
+                    style="display: flex; align-items: center; width: 100%; border-left: 0.5px solid #999999;border-right: 0.5px solid #999999;"
                     v-for="(v, i) in tableList" :key="i+30">
-                    <div class="table_item" style="border: 0.5px solid #999999; border-left: 0; height: 27px; display: flex; align-items: center;
+                    <!-- <div class="table_item" style="border: 0.5px solid #999999; border-left: 0; height: 27px; display: flex; align-items: center;
+               justify-content: center;font-size: 12px;word-break: break-all;" :style="{width:(1/printList2.length)*100+'%' }"
+                        v-for="(item, index) in v" :key="index+i"><span :style="font2style">{{ item }}</span></div> -->
+                                    <div class="table_item" style="border: none; height: 27px; display: flex; align-items: center;
                justify-content: center;font-size: 12px;word-break: break-all;" :style="{width:(1/printList2.length)*100+'%' }"
                         v-for="(item, index) in v" :key="index+i"><span :style="font2style">{{ item }}</span></div>
                 </div>
@@ -82,7 +85,7 @@
                     class="table_footer_one print_list5"
                     style="display: flex; align-items: center; justify-content: center; width: 100%; border-left: 0.5px solid #999999;">
                     <div class="table_item"
-                        style="border: 0.5px solid #999999; border-left: 0; height: 27px; display: flex; align-items: center; padding-left: 10px;"
+                        style="border: 0.5px solid #999999; border-right: 0.5px solid #999999 !important; border-left: 0; height: 27px; display: flex; align-items: center; padding-left: 10px;"
                         :style="{width:(1/mc.length)*100+'%' }" v-for="(item, index) in mc">
                         <div :style="font5style" style="width: 100%;height: 100%; display: flex;" v-if="printType==3">
                             <span
@@ -120,14 +123,14 @@
             </div>
             <div v-if="printType!=3" class="header_show" style="width: 100%; display: flex; flex-wrap: wrap;">
                 <div v-if="item.title!='标题'" style="flex-shrink: 0; margin: 5px 0; word-break: break-word;" 
-                :style="{width: item.title=='换行'?'100%':item.width?item.width:1/col_num*100+'%', margin:item.title=='换行'?'0':'5px 0'}"
+                :style="{width: item.title=='换行'?'100%':item.width?item.width:1/ ['收款单位（盖章）'].includes( item.title ) ? 70+'%' : col_num*100+'%', margin:item.title=='换行'?'0':'5px 0'}"
                 class="page_header_item" v-for="(item, index) in list2" :key="index">
-                    <div :style="font1style" style="margin-left: 10px;" v-if="item.title!='换行'">
-                        {{item.title}}：{{item.value}}
+                    <div :style="{font1style}" style="margin-left: 10px;" v-if="item.title!='换行'">
+                        {{item.title}}{{ item.title.trim().length === 0 ? '': ':' }}{{item.value}}
                     </div>
                 </div>
             </div>   
-            <a-descriptions v-else style="margin-top: 10px" :column="col_num" :class="'template'+printType+'type'">
+            <a-descriptions v-else style="margin-top: 10px" :column="col_num" :class="'descriptions-footer template'+printType+'type'">
                 <a-descriptions-item v-for="(item1,index1) in list2" :key="index1" v-if="item1.title !== '换行'"
                     style="white-space: nowrap;">
                     <template v-slot:label>
@@ -135,7 +138,7 @@
                             {{item1.title}}
                         </span>
                         <span :style="font3style" v-else>
-                            {{item1.title}}：
+                            {{item1.title}}{{ item1.title.trim().length === 0 ? '': ':' }}
                         </span>
                     </template>
                     <span :style="font3style">{{item1.value}}</span>
@@ -164,6 +167,34 @@
         border-radius: 2px 2px 0 0;
         border-collapse: separate;
         border-spacing: 0;
+    }
+
+    .descriptions-header{
+        /deep/ .ant-descriptions-row{
+            td{
+                padding-bottom: 8px !important;
+            }
+        }
+    }
+
+    .descriptions-footer{
+          /deep/ .ant-descriptions-item {
+            &:nth-child(1) {
+                text-align: right !important;
+            }
+        }
+    //     /deep/ .ant-descriptions-row{
+    //         display: flex;
+    //         flex-direction: column;
+    //     }
+    //     /deep/ .ant-descriptions-item {
+    //         &:nth-last-child(1) {
+    //             text-align: left;
+    //         }
+    //         &:nth-child(1) {
+    //             text-align: left;
+    //         }
+    //     }
     }
 
     .template3type {
@@ -235,11 +266,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-left: 0.5px solid #999999;
+            // border-left: 0.5px solid #999999;
+            border-right: 0.5px solid #999999;
             width: 100%;
 
             .table_item {
-                border: 0.5px solid #999999;
+                // border: 0.5px solid #999999;
+                border: none !important;
+                // border-right: 0.5px solid #999999;
                 border-left: 0;
                 height: 27px;
                 display: flex;
@@ -462,6 +496,13 @@
                 
                 this.list2.map((v, i)=>{
                     let iilen=i+1;
+
+                    if( v.title == '打印日期' && v.value ){
+                        const [datePart, timePart] = v.value.split(' ');
+                        v.value = datePart
+                        v.title = '开票日期'
+                    }
+                    
                     if(v.title == '换行'){
                         let width = ''
                         if((this.list2[i-1]['realIndex'] + 1) % this.col_num == 0){
@@ -510,7 +551,6 @@
                     .then((res) => {
                         this.confirmLoading = false
                         console.log('resx', res)
-
                         this.printList1 = res.printList1
                         this.printList2 = res.printList2
                         this.printList3 = res.printList3
@@ -536,6 +576,11 @@
                                 key: item3.field_name
                             })
                         })
+
+                        const targetItem = res.printList3.find(item => item.title === "收款单位（盖章）");
+                        if( targetItem ){
+                            targetItem.value = res.print_title
+                        }
                         this.font1style= '';
                         this.font2style= '';
                         this.font3style= '';
@@ -569,7 +614,7 @@
                                 }
                             });
                         }
-                        if(res.type==3){
+                        if(res.type==3 && 0 == 1){
                             if(res.prints_num==0){
                                this.print_desc='第1次打印，打印人：' +res.print_name;
                             }else{
@@ -736,10 +781,10 @@
                 let styleC = '';
                 if (this.printType == 3) {
                     styleC = '@page {  } ' +
-                        '@media print { .ant-table-tbody > tr > td {border-bottom: 1px solid #000000;-webkit-transition: all 0.3s, border 0s;transition: all 0.3s, border 0s;}   .ant-table-bordered .ant-table-thead > tr > th, .ant-table-bordered .ant-table-tbody > tr > td {border-right: 1px solid #000000;}  .ant-table-bordered .ant-table-header > table, .ant-table-bordered .ant-table-body > table, .ant-table-bordered .ant-table-fixed-left table, .ant-table-bordered .ant-table-fixed-right table {border: 1px solid #000000;border-right: 0;border-bottom: 0;} .ant-table-thead > tr > th {color: rgba(0, 0, 0, 1);font-weight: 600;text-align: left;background: #fafafa;border-bottom: 1px solid #000000;-webkit-transition: background 0.3s ease;transition: background 0.3s ease;} .ant-descriptions-item-colon::after {content:"";} .ant-table table {width: 100%;} .ant-descriptions-row td { width:3% } .template3type {text-align: center;} .template3type .ant-descriptions-item:last-child {text-align: right;} .template3type .ant-descriptions-item:first-child {text-align: left;}'
+                        '@media print { .ant-table-tbody > tr > td {border-bottom: 1px solid #000000;-webkit-transition: all 0.3s, border 0s;transition: all 0.3s, border 0s;}   .ant-table-bordered .ant-table-thead > tr > th, .ant-table-bordered .ant-table-tbody > tr > td {border-right: 1px solid #000000;}  .ant-table-bordered .ant-table-header > table, .ant-table-bordered .ant-table-body > table, .ant-table-bordered .ant-table-fixed-left table, .ant-table-bordered .ant-table-fixed-right table {border: 1px solid #000000;border-right: 0;border-bottom: 0;} .ant-table-thead > tr > th {color: rgba(0, 0, 0, 1);font-weight: 600;text-align: left;background: #fafafa;border-bottom: 1px solid #000000;-webkit-transition: background 0.3s ease;transition: background 0.3s ease;} .ant-descriptions-item-colon::after {content:"";} .ant-table table {width: 100%;} .ant-descriptions-row td { width:3%;padding-bottom: 8px; } .template3type {text-align: center;} .template3type .ant-descriptions-item:last-child {text-align: right;} .template3type .ant-descriptions-item:first-child {text-align: left;}'
                 } else {
                     styleC = '@page {  } ' +
-                        '@media print { .ant-table-tbody > tr > td {border-bottom: 1px solid #000000;-webkit-transition: all 0.3s, border 0s;transition: all 0.3s, border 0s;}   .ant-table-bordered .ant-table-thead > tr > th, .ant-table-bordered .ant-table-tbody > tr > td {border-right: 1px solid #000000;}  .ant-table-bordered .ant-table-header > table, .ant-table-bordered .ant-table-body > table, .ant-table-bordered .ant-table-fixed-left table, .ant-table-bordered .ant-table-fixed-right table {border: 1px solid #000000;border-right: 0;border-bottom: 0;} .ant-table-thead > tr > th {color: rgba(0, 0, 0, 1);font-weight: 600;text-align: left;background: #fafafa;border-bottom: 1px solid #000000;-webkit-transition: background 0.3s ease;transition: background 0.3s ease;} .ant-descriptions-item-colon::after {content:"";} .ant-table table {width: 100%;} .ant-descriptions-row td { width:3% } '
+                        '@media print { .ant-table-tbody > tr > td {border-bottom: 1px solid #000000;-webkit-transition: all 0.3s, border 0s;transition: all 0.3s, border 0s;}   .ant-table-bordered .ant-table-thead > tr > th, .ant-table-bordered .ant-table-tbody > tr > td {border-right: 1px solid #000000;}  .ant-table-bordered .ant-table-header > table, .ant-table-bordered .ant-table-body > table, .ant-table-bordered .ant-table-fixed-left table, .ant-table-bordered .ant-table-fixed-right table {border: 1px solid #000000;border-right: 0;border-bottom: 0;} .ant-table-thead > tr > th {color: rgba(0, 0, 0, 1);font-weight: 600;text-align: left;background: #fafafa;border-bottom: 1px solid #000000;-webkit-transition: background 0.3s ease;transition: background 0.3s ease;} .ant-descriptions-item-colon::after {content:"";} .ant-table table {width: 100%;} .ant-descriptions-row td { width:3%;padding-bottom: 8px; } '
                 }
                 printJS({
                     printable: this.table_id, // 标签元素id
